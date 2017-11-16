@@ -1,0 +1,85 @@
+body, div, ul, li {
+	margin:0;
+	padding:0;
+}
+
+img{
+	border:0;
+}
+
+address, caption, cite, code, dfn, th, var{
+	font-style:normal;
+	font-weight:normal;
+}
+
+ul{
+	list-style:none;
+}
+
+.weapon {
+
+}
+
+.title {
+	text-align: center;
+}
+
+.main-body {
+	margin: 2em auto 0;
+	max-width: 700px;
+	padding: 10px;
+}
+
+.game h3{
+	font-size:1.1em;
+}
+
+.game .choices{
+	text-align:center;
+}
+
+.game .choices li{
+	display:inline-block;
+	width:25%;
+}
+
+.game .choices{
+	border-bottom:5px solid #2a2829;
+	border-top:5px solid #2a2829;
+	text-align:center;
+}
+
+.game .choices .choice-box{
+	display:inline-block;
+	padding:5px 10px;
+	text-align:center;
+	width:40%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+.game .scores{
+	border-bottom:5px solid #2a2829;
+	border-top:5px solid #2a2829;
+	text-align:center;
+}
+
+.game .scores .score-box{
+	display:inline-block;
+	padding:5px 10px;
+	text-align:center;
+	width:40%;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}
+
+.game #computerScore, .game #playerScore{
+	font-size:3em;
+}
+
+.game #playerChoice, .game #computerChoice{
+	font-weight:700;
+	text-transform:uppercase;
+}
