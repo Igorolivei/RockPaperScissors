@@ -13,19 +13,19 @@
 				<h3 id="game-pvc-title" class="title"></h3>			
 				<ul class="choices-list">
 					<li class="weapon">
-						<a onclick="playerVsComputer('rock')">
+						<a onclick="play('rock')">
 							<img class="weapon-img" id="rock-pvc-img" width="50px" />
 							<p class="weapon-lbl">ROCK</p>
 						</a>
 					</li>					
 					<li class="weapon">
-						<a onclick="playerVsComputer('paper')">
+						<a onclick="play('paper')">
 							<img class="weapon-img" id="paper-pvc-img" width="50px" />
 							<p class="weapon-lbl">PAPER</p>
 						</a>
 					</li>					
 					<li class="weapon">
-						<a onclick="playerVsComputer('scissors')">
+						<a onclick="play('scissors')">
 							<img class="weapon-img" id="scissors-pvc-img" width="50px" />
 							<p class="weapon-lbl">SCISSORS</p>
 						</a>
@@ -56,7 +56,7 @@
 					</li>
 				</ul>
 				<div id="playAgainBox">	
-					<button id="playAgain-btn" onclick="computerVsComputer()">
+					<button id="playAgain-btn" onclick="play()">
 						<p>Play Again</p>
 					</button>
 				</div>

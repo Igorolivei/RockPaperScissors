@@ -10,9 +10,10 @@ var player2ScoreBox = document.getElementById('player2Score');
 var player1ChoiceElement = document.getElementById('player1Choice');
 var player2ChoiceElement = document.getElementById('player2Choice')
 
-function playerVsComputer(player1Choice) {
+function play(playerChoice) {
 
 	/* Generates computer choice. */
+    player1Choice = playerChoice ? playerChoice : Math.floor(Math.random() * 3) + 1;
 	player2Choice = Math.floor(Math.random() * 3) + 1;
 	
 	if (player2Choice == 1) {
@@ -22,68 +23,62 @@ function playerVsComputer(player1Choice) {
 	} else {
 		player2Choice = "scissors";
 	}
-	
-	player1ChoiceElement.innerHTML = player1Choice;
-	player2ChoiceElement.innerHTML = player2Choice;
 
-	compareWeapons(player1Choice, player2Choice);
-}
-
-function computerVsComputer() {
-
-    /* Generates computers choices. */
-    player1Choice = Math.floor(Math.random() * 3) + 1;
-    player2Choice = Math.floor(Math.random() * 3) + 1;
-    
-    if (player2Choice == 1) {
-        player2Choice = "rock";
-    } else if(player2Choice == 2) {
-        player2Choice = "paper";
-    } else {
-        player2Choice = "scissors";
+    if (Number.isInteger(player1Choice)) {
+        if (player1Choice == 1) {
+            player1Choice = "rock";
+        } else if(player1Choice == 2) {
+            player1Choice = "paper";
+        } else {
+            player1Choice = "scissors";
+        }
     }
-    
+
     player1ChoiceElement.innerHTML = player1Choice;
     player2ChoiceElement.innerHTML = player2Choice;
 
-    compareWeapons(player1Choice, player2Choice);
+    var winner = compareWeapons(player1Choice, player2Choice);
+    if (winner == 1) {
+        player1Score++;
+    } else if (winner == 2) {
+        player2Score++;
+    } else {
+        alert("Oh, this is a tie!");
+    }
+    return updateScores();
 }
 
 function compareWeapons(player1Choice, player2Choice) {
 
     if (player1Choice == player2Choice) {
-        alert("Oh, this is a tie!")
-        return false;
+        return 0;
     }
 
     if (player1Choice == "rock") {
     	if (player2Choice == "scissors") { 
-            player1Score++;         
+            return 1;         
         }
         else {
-            player2Score++;
+            return 2;
         }
-        return updateScores();
     }
     
     if (player1Choice == "paper") { 	
         if (player2Choice == "rock") {
-            player1Score++;
+            return 1;
         }
         else {
-            player2Score++;
+            return 2;
         }
-        return updateScores();
     }
 
     if (player1Choice == "scissors") {    
         if (player2Choice == "rock") {
-            player2Score++;
+            return 2;
         }
         else {
-            player1Score++;
+            return 1;
         }
-        return updateScores();
     }
 }
 
