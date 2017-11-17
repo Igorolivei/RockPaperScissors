@@ -1,19 +1,19 @@
 body, div, ul, li {
-	margin:0;
-	padding:0;
+	margin: 0;
+	padding: 0;
 }
 
 img{
-	border:0;
+	border: 0;
 }
 
 address, caption, cite, code, dfn, th, var{
-	font-style:normal;
-	font-weight:normal;
+	font-style: normal;
+	font-weight: normal;
 }
 
 ul{
-	list-style:none;
+	list-style: none;
 }
 
 .weapon {
@@ -31,55 +31,95 @@ ul{
 }
 
 .game h3{
-	font-size:1.1em;
+	font-size: 1.1em;
+}
+
+.game .choices-list {
+	text-align: center;
+}
+
+.game .choices-list li{
+	display: inline-block;
+	width: 25%;
+}
+
+.game #playAgainBox{
+	margin: 0 auto;
+	width: 15%;
+	text-align: center;
+}
+
+.game #playAgain-btn{
+	border-style: solid;
+	border-color: black;
+	background-color: #c9cacc;
 }
 
 .game .choices{
-	text-align:center;
+	text-align: center;
+	border-bottom: 3px solid #2a2829;
+	border-top: 5px solid #2a2829;
+	text-align: center;
 }
 
 .game .choices li{
-	display:inline-block;
-	width:25%;
-}
-
-.game .choices{
-	border-bottom:5px solid #2a2829;
-	border-top:5px solid #2a2829;
-	text-align:center;
+	display: inline-block;
+	width: 25%;
 }
 
 .game .choices .choice-box{
-	display:inline-block;
-	padding:5px 10px;
-	text-align:center;
-	width:40%;
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	box-sizing:border-box;
+	display: inline-block;
+	padding: 5px 10px;
+	text-align: center;
+	width: 40%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.weapon-lbl{
+	visibility: hidden;
+}
+
+.weapon:hover .weapon-img{
+	width: 55px;
+}
+
+.weapon:hover .weapon-lbl{
+	visibility: visible;
 }
 
 .game .scores{
-	border-bottom:5px solid #2a2829;
-	border-top:5px solid #2a2829;
-	text-align:center;
+	border-bottom: 5px solid #2a2829;
+	border-top: 5px solid #2a2829;
+	text-align: center;
 }
 
 .game .scores .score-box{
-	display:inline-block;
-	padding:5px 10px;
-	text-align:center;
-	width:40%;
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	box-sizing:border-box;
+	display: inline-block;
+	padding: 5px 10px;
+	text-align: center;
+	width: 40%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-.game #computerScore, .game #playerScore{
-	font-size:3em;
+.game #player1Score, .game #player2Score{
+	font-size: 3em;
 }
 
-.game #playerChoice, .game #computerChoice{
-	font-weight:700;
-	text-transform:uppercase;
+.game #player1Choice, .game #player2Choice{
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.game .menu {
+	text-align: center;
+}
+
+.game .menu li{
+	display: inline-block;
+	text-transform: uppercase;
+	width: 30%;
 }

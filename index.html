@@ -7,67 +7,112 @@
 </head>
 <body> 	
 	<div class="main-body">
-		<h1 class="title">Paper, Rock, Scissors</h1>
+		<h1 class="title">Rock, Paper, Scissors</h1>
 		<div class="game">
- 			<div >
-				<h3>Make your choice</h3>			
-				<ul class="choices">
-					<li>
-						<a class="weapon" onclick="play('paper')">
-							<img src="assets/img/paper-hand.png" width="50px" />
+ 			<div id="playerVsComputerGame">
+				<h3 id="game-pvc-title" class="title"></h3>			
+				<ul class="choices-list">
+					<li class="weapon">
+						<a onclick="playerVsComputer('rock')">
+							<img class="weapon-img" id="rock-pvc-img" width="50px" />
+							<p class="weapon-lbl">ROCK</p>
 						</a>
 					</li>					
-					<li>
-						<a class="weapon" onclick="play('rock')">
-							<img src="assets/img/rock-hand.png" width="50px" />
+					<li class="weapon">
+						<a onclick="playerVsComputer('paper')">
+							<img class="weapon-img" id="paper-pvc-img" width="50px" />
+							<p class="weapon-lbl">PAPER</p>
 						</a>
 					</li>					
-					<li>
-						<a class="weapon" onclick="play('scissors')">
-							<img src="assets/img/scissors-hand.png" width="50px" />
+					<li class="weapon">
+						<a onclick="playerVsComputer('scissors')">
+							<img class="weapon-img" id="scissors-pvc-img" width="50px" />
+							<p class="weapon-lbl">SCISSORS</p>
 						</a>
 					</li>
 				</ul>			
-			</div>			
+			</div>
+
+			<div id="computerVsComputerGame">
+				<h3 id="game-cvc-title" class="title"></h3>			
+				<ul class="choices-list">
+					<li class="weapon">
+						<a>
+							<img class="weapon-img" id="rock-cvc-img" width="50px" />
+							<p class="weapon-lbl">ROCK</p>
+						</a>
+					</li>					
+					<li class="weapon">
+						<a>
+							<img class="weapon-img" id="paper-cvc-img" width="50px" />
+							<p class="weapon-lbl">PAPER</p>
+						</a>
+					</li>					
+					<li class="weapon">
+						<a>
+							<img class="weapon-img" id="scissors-cvc-img" width="50px" />
+							<p class="weapon-lbl">SCISSORS</p>
+						</a>
+					</li>
+				</ul>
+				<div id="playAgainBox">	
+					<button id="playAgain-btn" onclick="computerVsComputer()">
+						<p>Play Again</p>
+					</button>
+				</div>
+			</div>				
 
 			<!-- Choices box -->
 			<div>
-				<h3>Choices</h3>
+				<h3 class="title">Choices</h3>
 				<div class="choices">
 					<div class="choice-box">
-		 				<div id="playerChoice">Choose your weapon!</div>
-			 			<span>Player</span>
+		 				<div id="player1Choice"></div>
+			 			<span id="player1Name"></span>
 		 			</div>
+	 				<span>vs.</span>
 		 			<div class="choice-box">
-			 			<div id="computerChoice">I'm waiting for you!</div>
-			 			<span>Computer</span>
+			 			<div id="player2Choice"></div>
+			 			<span id="player2Name"></span>
 		 			</div>
 		 		</div>
 	 		</div>
 	 		
 	 		<!-- Score box -->
 			<div>			
-				<h3>Score</h3>
+				<h3 class="title">Score</h3>
 				<div class="scores">
 					<div class="score-box">
-		 				<div id="playerScore">0</div>
-			 			<span>Player</span>
+		 				<div id="player1Score">0</div>
+			 			<span id="player1ScoreName"></span>
 		 			</div>
 		 			<div class="score-box">
-			 			<div id="computerScore">0</div>
-			 			<span>Computer</span>
+			 			<div id="player2Score">0</div>
+			 			<span id="player2ScoreName"></span>
 		 			</div>
 		 		</div>
 		 	</div>
 		 	
 		 	<!-- Menu box -->
-		 	<div>
+		 	<div class="menu">
 		 		<h3 class="title">Menu</h3>
-		 		<div class="menu">
-		 			<div class="menu-option">
-
-		 			</div>
-		 		</div>
+		 		<ul>
+		 			<li>
+		 				<a onclick="resetGame()">
+		 					<p id="reset-btn">RESET</p>
+		 				</a>
+		 			</li>
+		 			<li>
+		 				<a onclick="switchGameMode()">
+		 					<p id="switchGameMode-btn"></p>
+		 				</a>
+		 			</li>
+		 			<li>
+		 				<a onclick="switchGameSymbols()">
+		 					<p id="switchGameSymbols-btn"></p>
+		 				</a>
+		 			</li>
+		 		</ul>
 		 	</div>
  	</div>
 	</div>
