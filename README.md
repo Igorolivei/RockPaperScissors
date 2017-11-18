@@ -14,6 +14,9 @@ You can play on the mode Player vs. Computer, where you will be playing against 
 ### Symbols
 You can switch the symbols to hand symbols or object symbols using the option on menu. If you switch the symbols during a match, the score won't change.
 
+### Logic
+Based on the history of your plays, this game can see if you have any kind of preference for one specific weapon. 
+
 ## Tests
 
 The tests were written using the framework Jasmine. To execute the tests open the file SpecRunner.html (present on the folder tests) in a browser.
