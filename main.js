@@ -73,9 +73,7 @@ function play(playerChoice) {
         }
     }
 
-    //Writes on the UI the chosen weapon
-    player1ChoiceElement.innerHTML = player1Choice;
-    player2ChoiceElement.innerHTML = player2Choice;
+    updatePlays(player1Choice, player2Choice);
 
     //Gets the winner 
     var winner = compareWeapons(player1Choice, player2Choice);
@@ -103,6 +101,14 @@ function checkPlayerTendencies() {
         }
     }
     return false;
+}
+
+/*
+ * Writes player choices on UI
+ */
+function updatePlays(player1Choice, player2Choice) {
+    player1ChoiceElement.innerHTML = player1Choice;
+    player2ChoiceElement.innerHTML = player2Choice;
 }
 
 /*
