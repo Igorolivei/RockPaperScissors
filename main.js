@@ -1,15 +1,15 @@
 //Play counters
-var playerRocks = 0;
-var playerPapers = 0;
-var playerScissors = 0;
+var totalPlays = 0;
 
 //Scores
-var player1Score = 0
-var player2Score = 0
+var player1Score = 0;
+var player2Score = 0;
+var tieScore = 0;
 
 //Scores elements
 var player1ScoreBox = document.getElementById('player1Score');
 var player2ScoreBox = document.getElementById('player2Score');
+var tieScoreBox = document.getElementById('tieScore');
 
 //Choices elements
 var player1ChoiceElement = document.getElementById('player1Choice');
@@ -19,12 +19,15 @@ var player2ChoiceElement = document.getElementById('player2Choice')
 const weapons = {
     rock: {
         beats: ['scissors'],
+        counter: 0,
     },
     paper: {
         beats: ['rock'],
+        counter: 0,
     },
     scissors: {
         beats: ['paper'],
+        counter: 0,
     },
 };
 
@@ -33,18 +36,21 @@ const weapons = {
  */
 function play(playerChoice) {
 
-	// Check if it's player vs computer, and if not, select a random weapon
-    player1Choice = playerChoice ? playerChoice : Math.floor(Math.random() * Object.keys(weapons).length) + 1;
+    var playerTendence = checkPlayerTendencies();
+    //Choose randomly if the next computer play will consider the player's tendence
+    // (There's 2/3 of chance of the next play be random)
+    var playRandom = Math.random() > 0.33 ? true : false;
+    //Check if it's player vs computer, and if not, select a random weapon
+    player1Choice = playerChoice ? playerChoice : 
+                     Math.floor(Math.random() * Object.keys(weapons).length) + 1;
+    //Check if the player has the tendence to play one specific weapon and generates computer's choice
+    player2Choice = playerTendence != false && !playRandom ? choosePlay(playerTendence) : 
+                     Math.floor(Math.random() * Object.keys(weapons).length) + 1;
 
     //If player vs computer, counts the play
     if (playerChoice) {
-        if (playerChoice == 'rock') {
-            playerRocks++;
-        } else if (playerChoice == 'paper') {
-            playerPapers++;
-        } else {
-            playerScissors++;
-        }
+        weapons[playerChoice].counter++;
+        totalPlays++;
     //If computer vs computer
     } else {
         if (player1Choice == 1) {
@@ -56,9 +62,6 @@ function play(playerChoice) {
         }
     }
 
-    //Check if the player has the tendence to play one specific weapon and generates computer's choice
-    var playerTendence = checkPlayerTendencies();
-    player2Choice = playerTendence != 0 ? choosePlay(playerTendence) : Math.floor(Math.random() * Object.keys(weapons).length) + 1;
 	
     if (Number.isInteger(player2Choice)) {
         if (player2Choice == 1) {
@@ -81,7 +84,7 @@ function play(playerChoice) {
     } else if (winner == 2) {
         player2Score++;
     } else {
-        alert("Oh, this is a tie!");
+        tieScore++;
     }
     return updateScores();
 }
@@ -91,19 +94,12 @@ function play(playerChoice) {
  * Obs.: Considered just if more than 60% of plays are the same weapon
  */
 function checkPlayerTendencies() {
-    var totalPlays = playerRocks + playerPapers + playerScissors;
-    var pRock = playerRocks / totalPlays;
-    var pPaper = playerPapers / totalPlays;
-    var pScissors = playerScissors / totalPlays;
+    var aWeapons = Object.keys(weapons);
 
-    //If it's not the first play
-    if (totalPlays > 1) {
-        if (pRock >= 0.60) {
-            return 'rock';
-        } else if (pPaper >= 0.60) {
-            return 'paper';
-        } else if (pScissors >= 0.60) {
-            return 'scissors';
+    for (i in aWeapons) {
+        var pWeapon = weapons[aWeapons[i]].counter / totalPlays;
+        if (pWeapon >= 0.60) {
+            return aWeapons[i];
         }
     }
     return false;
@@ -143,6 +139,7 @@ function compareWeapons(player1Choice, player2Choice) {
 function updateScores() {
 	player1ScoreBox.innerHTML = player1Score;
 	player2ScoreBox.innerHTML = player2Score;
+    tieScoreBox.innerHTML = tieScore;
 }	
 
 /*
@@ -151,9 +148,7 @@ function updateScores() {
 function resetGame() {
     player1Score = 0;
     player2Score = 0;
-    playerRocks = 0;
-    playerPapers = 0;
-    playerScissors = 0;
+    tieScore = 0;
     updateScores();
 }
 
