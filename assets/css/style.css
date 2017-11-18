@@ -57,9 +57,6 @@ ul{
 
 .game .choices{
 	text-align: center;
-	border-bottom: 3px solid #2a2829;
-	border-top: 5px solid #2a2829;
-	text-align: center;
 }
 
 .game .choices li{
@@ -75,6 +72,10 @@ ul{
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	border-style: solid;
+	border-bottom: 4px solid;
+	border-top: 1px solid;
+	border-right: 1px solid;
 }
 
 .weapon-lbl{
@@ -99,13 +100,13 @@ ul{
 	display: inline-block;
 	padding: 5px 10px;
 	text-align: center;
-	width: 40%;
+	width: 30%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-.game #player1Score, .game #player2Score{
+.game #player1Score, .game #player2Score, .game #tieScore{
 	font-size: 3em;
 }
 
