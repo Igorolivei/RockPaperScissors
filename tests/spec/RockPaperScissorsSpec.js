@@ -31,4 +31,12 @@ describe("RockPaperScissors", function() {
 
 		//to test when it fails: expect(compareWeapons(player1Choice, player2Choice)).toEqual(1);
 	});
+
+	it("should when the player have a tendence to play one specific weapon and say which one it is", function() {
+		//In this case, rock has been played approximately in 66% of the plays
+		play('paper');
+		play('rock');
+		play('rock');
+		expect(checkPlayerTendences()).toEqual('rock');
+	});
 });
