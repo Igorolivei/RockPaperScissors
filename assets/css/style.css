@@ -43,39 +43,49 @@ ul{
 	width: 25%;
 }
 
-.game #playAgainBox{
+.game #play-again-box{
 	margin: 0 auto;
 	width: 15%;
 	text-align: center;
 }
 
-.game #playAgain-btn{
+.game .btn{
 	border-style: solid;
 	border-color: black;
+	border-radius: 5px;
 	background-color: #c9cacc;
+	font-weight: 700;
 }
 
-.game .choices{
-	text-align: center;
-}
-
-.game .choices li{
+.game #result {
 	display: inline-block;
+	text-align: center;
+	width: 100%;
+}
+
+.game #result-msg {
+	font-size: 2.5em;
+	font-weight: 700;
+	color: red;
+}
+
+.game #player1-choice-box {
+	float: left;
 	width: 25%;
 }
 
-.game .choices .choice-box{
-	display: inline-block;
-	padding: 5px 10px;
-	text-align: center;
-	width: 40%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	border-style: solid;
-	border-bottom: 4px solid;
-	border-top: 1px solid;
-	border-right: 1px solid;
+.game #player2-choice-box {
+	float: right;	
+	width: 25%;
+}
+
+.game #player1-name, .game #player2-name {
+	visibility: hidden;
+}
+
+.game #result-box {
+	margin: 0 auto;
+	width: 50%;
 }
 
 .weapon-lbl{
@@ -91,8 +101,6 @@ ul{
 }
 
 .game .scores{
-	border-bottom: 5px solid #2a2829;
-	border-top: 5px solid #2a2829;
 	text-align: center;
 }
 
@@ -100,19 +108,12 @@ ul{
 	display: inline-block;
 	padding: 5px 10px;
 	text-align: center;
-	width: 30%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	width: 15%;
 }
 
-.game #player1Score, .game #player2Score, .game #tieScore{
-	font-size: 3em;
-}
-
-.game #player1Choice, .game #player2Choice{
+.game #player1-score, .game #player2-score, .game #tie-score{
+	font-size: 1em;
 	font-weight: 700;
-	text-transform: uppercase;
 }
 
 .game .menu {
@@ -120,7 +121,14 @@ ul{
 }
 
 .game .menu li{
-	display: inline-block;
+	margin: 0 auto;
 	text-transform: uppercase;
 	width: 30%;
+	border-bottom: 1px solid;
+}
+
+.game .menu li:hover{
+	width: 35%;
+	background-color: #c9cacc;
+	font-size: 1.2em;
 }
