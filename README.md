@@ -1,5 +1,8 @@
 # RockPaperScissors
 
+## Demo
+You can play a live demo on https://playrps.herokuapp.com
+
 ## How to run
 To play Rock, Paper, Scissors, you just need to open the index.html file on your preferred browser and enjoy it
 
