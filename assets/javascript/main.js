@@ -149,7 +149,6 @@ var rockPaperScissors = (function() {
     	for(i in aWeaponsKeys) {
     		weapons[aWeaponsKeys[i]].counter = 0;
     	}
-    	console.log(weapons);
     };
 
     /*
@@ -209,6 +208,7 @@ var rockPaperScissors = (function() {
 })();
 
 /*================================UI's JavaScript===============================================*/
+var interval;
 
 //Buttons
 var btnSwitchGameMode = document.getElementById("switch-game-mode-btn");
@@ -250,11 +250,14 @@ function play(playerChoice){
 	writeResult(result.player1Choice, result.player2Choice, result.winner);
 	updateScores();
 	if (result.winnerBoF) {
-		if (confirm(result.winnerBoF+" won the best of five! Play again?")) {
-			resetGame();
-		} else {
-			switchGameMode();
-		}
+		//Without interval, the confirm box appears before the last result be written on UI
+		interval = setInterval(function() {
+			if (confirm(result.winnerBoF+" won the best of five! Play again?")) {
+				resetGame();
+			} else {
+				resetGame(false);
+			}
+		}, 500);
 	}
 }
 
@@ -300,6 +303,9 @@ function resetGame(bestOfFive) {
 	if (bestOfFive == false) {
 		rockPaperScissors.setBestOfFive(false);
 		checkGameMode();
+	}
+	if (interval) {
+		clearInterval(interval);
 	}
     rockPaperScissors.resetGame();
     player1ChoiceImage.src = "";
