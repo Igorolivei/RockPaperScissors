@@ -122,12 +122,12 @@ ul{
 .game .menu li{
 	margin: 0 auto;
 	text-transform: uppercase;
-	width: 30%;
+	width: 50%;
 	border-bottom: 1px solid;
 }
 
 .game .menu li:hover{
-	width: 35%;
+	width: 60%;
 	background-color: #c9cacc;
 	font-size: 1.2em;
 }
