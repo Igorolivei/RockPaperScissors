@@ -74,8 +74,8 @@ var rockPaperScissors = (function() {
     	    iTieScore++;
     	}
 	    
-	    if(lBestOfFive && (player1Score + player2Score >= 5)) {
-			sWinnerBoF = player1Score > player2Score ? "You" : "Computer";
+	    if(lBestOfFive && (iPlayer1Score + iPlayer2Score >= 5)) {
+			sWinnerBoF = iPlayer1Score > iPlayer2Score ? "You" : "Computer";
 			result.winnerBoF = sWinnerBoF;
 	    }
 
