@@ -5,6 +5,7 @@ var totalPlays = 0;
 
 //Game modes: 1 - Player vs. Computer; 2 - Computer vs. Computer
 var gameMode = 1;
+var lBestOfFive = 0;
 //Game symbols: 1 - Hands; 2 - Objects
 var gameSymbols = 1;
 //Buttons
@@ -59,21 +60,22 @@ const weapons = {
         counter: 0,
     },
 };
+var weaponsKeys = Object.keys(weapons);
 
 /*
  * Execute a play in both modes
  */
 function play(playerChoice) {
     //Checks and gets player's tendencies
-    var playerTendence = checkPlayerTendencies();
-    //Choose randomly if the next computer play will consider the player's tendence
+    var playerTendency = checkPlayerTendencies();
+    //Choose randomly if the next computer play will consider the player's tendency
     // (There's 2/3 of chance of the next play be random)
     var playRandom = Math.random() > 0.33 ? true : false;
     //Check if it's player vs computer, and if not, select a random weapon
     player1Choice = playerChoice ? playerChoice : 
                      Math.floor(Math.random() * Object.keys(weapons).length);
-    //Check if the player has the tendence to play one specific weapon and generates computer's choice
-    player2Choice = playerTendence != false && !playRandom ? choosePlay(playerTendence) : 
+    //Check if the player has the tendency to play one specific weapon and generates computer's choice
+    player2Choice = playerTendency != false && !playRandom ? choosePlay(playerTendency) : 
                      Math.floor(Math.random() * Object.keys(weapons).length);
 
     //If player vs computer, counts the play
@@ -92,7 +94,16 @@ function play(playerChoice) {
     //Gets the winner 
     var winner = compareWeapons(player1Choice, player2Choice);
     writeResult(player1Choice, player2Choice, winner);
-    return updateScores();
+ 	updateScores();
+    
+    if(lBestOfFive && (player1Score + player2Score >= 5)) {
+		var winnerBF = "";
+		winnerBF = player1Score > player2Score ? "You" : "Computer";
+		if (confirm(winnerBF+" won the best of five! Play again?")) {
+			resetGame(true);
+		}
+    	resetGame(false);
+    }
 }
 
 /*
@@ -115,12 +126,10 @@ function compareWeapons(player1Choice, player2Choice) {
  * Obs.: Considered just if more than 60% of plays are the same weapon
  */
 function checkPlayerTendencies() {
-    var aWeapons = Object.keys(weapons);
-
-    for (i in aWeapons) {
-        var pWeapon = weapons[aWeapons[i]].counter / totalPlays;
+    for (i in weaponsKeys) {
+        var pWeapon = weapons[weaponsKeys[i]].counter / totalPlays;
         if (pWeapon >= 0.60) {
-            return aWeapons[i];
+            return weaponsKeys[i];
         }
     }
     return false;
@@ -129,12 +138,11 @@ function checkPlayerTendencies() {
 /*
  * Based on the percentage of the player's plays, chooses computer's next play
  */
-function choosePlay(playerTendence) {
-    var aWeapons = Object.keys(weapons);
-    //Finds the weapon that beats the player tendence
-    for (i in aWeapons) {
-        if (weapons[aWeapons[i]].beats.indexOf(playerTendence) >= 0) {
-            return aWeapons[i];         
+function choosePlay(playerTendency) {
+    //Finds the weapon that beats the player tendency
+    for (i in weaponsKeys) {
+        if (weapons[weaponsKeys[i]].beats.indexOf(playerTendency) >= 0) {
+            return weaponsKeys[i];         
         }
     }
 }
@@ -143,19 +151,21 @@ function choosePlay(playerTendence) {
  * Writes player choices on UI and post the result
  */
 function writeResult(player1Choice, player2Choice, winner) {    
+    //Sets the choices images
     player1ChoiceImage.src = gameSymbols == 1 ? "assets/img/"+player1Choice+"-hand.png" :
     						  "assets/img/"+player1Choice+"-symbol.png";
     player2ChoiceImage.src = gameSymbols == 1 ? "assets/img/"+player2Choice+"-hand.png" :
     						  "assets/img/"+player2Choice+"-symbol.png";
+    //Show the names
     player1Name.style.visibility = 'visible';
     player2Name.style.visibility = 'visible';
 
     if (winner == 1) {
         player1Score++;
-        resultMessage.innerHTML = gameMode == 1 ? "You win!" : "Computer 1 win!";
+        resultMessage.innerHTML = gameMode == 1 ? "You won!" : "Computer 1 won!";
     } else if (winner == 2) {
         player2Score++;
-        resultMessage.innerHTML = gameMode == 1 ? "You lost :(" : "Computer 2 win!";
+        resultMessage.innerHTML = gameMode == 1 ? "You lost :(" : "Computer 2 won!";
     } else {
         resultMessage.innerHTML = "Hmm... that's a tie!";
         tieScore++;
@@ -174,7 +184,13 @@ function updateScores() {
 /*
  * Set scores to zero and update them on UI
  */
-function resetGame() {
+function resetGame(bestOfFive) {
+    
+	if(bestOfFive == false) {
+		lBestOfFive = false;
+		checkGameMode();
+	}
+
     player1Score = 0;
     player2Score = 0;
     player1ChoiceImage.src = "";
@@ -183,6 +199,9 @@ function resetGame() {
     player2Name.style.visibility = 'hidden';
     resultMessage.innerHTML = "";
     tieScore = 0;
+    for(i in weaponsKeys) {
+    	weapons[weaponsKeys[i]].counter = 0;
+    }
     updateScores();
 }
 
@@ -191,25 +210,31 @@ function resetGame() {
 /*
  * Switch to Player vs Computer or Computer vs Computer
  */
-function switchGameMode() {
-    gameMode = gameMode == 1 ? 2 : 1;
-    resetGame();
+function switchGameMode(bestOfFive) {
+    if (bestOfFive) {
+    	gameMode = 1;
+    	lBestOfFive = 1;
+    } else {
+    	gameMode = gameMode == 1 ? 2 : 1;
+    	lBestOfFive = 0;
+    }
+    resetGame(bestOfFive);
     checkGameMode();
 }
 
 function checkGameMode() {
+    //Player vs. Computer
     if (gameMode == 1) {
-        //Player vs. Computer
         player1Name.innerHTML = "Player";
         player2Name.innerHTML = "Computer";
         player1ScoreName.innerHTML = "Player";
         player2ScoreName.innerHTML = "Computer";
         btnSwitchGameMode.innerHTML = "Switch to Computer vs. Computer (Simulation mode)";
-        gamePvCTitle.innerHTML = "Make your choice!";
+        gamePvCTitle.innerHTML = lBestOfFive ? "Best of Five: Make your choice!" : "Make your choice!";
         divPlayerVsComputer.style.display = 'block';
         divComputerVsComputer.style.display = 'none';
+    //Computer vs. Computer
     } else {
-        //Computer vs. Computer
         player1Name.innerHTML = "Computer 1";
         player2Name.innerHTML = "Computer 2";
         player1ScoreName.innerHTML = "Computer 1";
