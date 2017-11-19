@@ -1,19 +1,48 @@
 //Play counters
 var totalPlays = 0;
 
-//Scores
+/* Menu's vars */
+
+//Game modes: 1 - Player vs. Computer; 2 - Computer vs. Computer
+var gameMode = 1;
+//Game symbols: 1 - Hands; 2 - Objects
+var gameSymbols = 1;
+//Buttons
+var btnSwitchGameMode = document.getElementById("switch-game-mode-btn");
+var btnSwitchGameSymbols = document.getElementById("switch-game-symbols-btn");
+
+/* UI's vars */
+
+//Score's elements
+var player1ScoreBox = document.getElementById('player1-score');
 var player1Score = 0;
+var player1ScoreName = document.getElementById("player1-score-name");
+var player2ScoreBox = document.getElementById('player2-score');
 var player2Score = 0;
+var player2ScoreName = document.getElementById("player2-score-name");
+var tieScoreBox = document.getElementById('tie-score');
 var tieScore = 0;
 
-//Scores elements
-var player1ScoreBox = document.getElementById('player1Score');
-var player2ScoreBox = document.getElementById('player2Score');
-var tieScoreBox = document.getElementById('tieScore');
+//Choice's and result's elements
+var resultMessage = document.getElementById('result-msg');
+var player1ChoiceImage = document.getElementById('player1-choice-img');
+var player2ChoiceImage = document.getElementById('player2-choice-img');
+var player1Name = document.getElementById("player1-name");
+var player2Name = document.getElementById("player2-name");
 
-//Choices elements
-var player1ChoiceElement = document.getElementById('player1Choice');
-var player2ChoiceElement = document.getElementById('player2Choice')
+//Person vs Computer mode
+var gamePvCTitle = document.getElementById("game-pvc-title");
+var rockPvCSymbol = document.getElementById("rock-pvc-img");
+var paperPvCSymbol = document.getElementById("paper-pvc-img");
+var scissorsPvCSymbol = document.getElementById("scissors-pvc-img");
+var divPlayerVsComputer = document.getElementById("playerVsComputer-game");
+
+//Computer vs Computer mode
+var gameCvCTitle = document.getElementById("game-cvc-title");
+var rockCvCSymbol = document.getElementById("rock-cvc-img");
+var paperCvCSymbol = document.getElementById("paper-cvc-img");
+var scissorsCvCSymbol = document.getElementById("scissors-cvc-img");
+var divComputerVsComputer = document.getElementById("computerVsComputer-game");
 
 //Weapons list
 const weapons = {
@@ -35,17 +64,17 @@ const weapons = {
  * Execute a play in both modes
  */
 function play(playerChoice) {
-
+    //Checks and gets player's tendencies
     var playerTendence = checkPlayerTendencies();
     //Choose randomly if the next computer play will consider the player's tendence
     // (There's 2/3 of chance of the next play be random)
     var playRandom = Math.random() > 0.33 ? true : false;
     //Check if it's player vs computer, and if not, select a random weapon
     player1Choice = playerChoice ? playerChoice : 
-                     Math.floor(Math.random() * Object.keys(weapons).length) + 1;
+                     Math.floor(Math.random() * Object.keys(weapons).length);
     //Check if the player has the tendence to play one specific weapon and generates computer's choice
     player2Choice = playerTendence != false && !playRandom ? choosePlay(playerTendence) : 
-                     Math.floor(Math.random() * Object.keys(weapons).length) + 1;
+                     Math.floor(Math.random() * Object.keys(weapons).length);
 
     //If player vs computer, counts the play
     if (playerChoice) {
@@ -53,38 +82,32 @@ function play(playerChoice) {
         totalPlays++;
     //If computer vs computer
     } else {
-        if (player1Choice == 1) {
-            player1Choice = 'rock';
-        } else if (player1Choice == 2) {
-            player1Choice = 'paper';
-        } else {
-            player1Choice = 'scissors';
-        }
+        player1Choice = Object.keys(weapons)[player1Choice];
     }
-
 	
     if (Number.isInteger(player2Choice)) {
-        if (player2Choice == 1) {
-            player2Choice = 'rock';
-        } else if (player2Choice == 2) {
-            player2Choice = 'paper';
-        } else {
-            player2Choice = 'scissors';
-        }
+        player2Choice = Object.keys(weapons)[player2Choice];
     }
-
-    updatePlays(player1Choice, player2Choice);
 
     //Gets the winner 
     var winner = compareWeapons(player1Choice, player2Choice);
-    if (winner == 1) {
-        player1Score++;
-    } else if (winner == 2) {
-        player2Score++;
-    } else {
-        tieScore++;
-    }
+    writeResult(player1Choice, player2Choice, winner);
     return updateScores();
+}
+
+/*
+ * Compare weapons to check the winner
+ */
+function compareWeapons(player1Choice, player2Choice) {
+    //Check if it's a tie
+    if (player1Choice == player2Choice) {
+        return 0;
+    }
+    //Check if player1's weapon beats player2's weapon
+    if (weapons[player1Choice].beats.indexOf(player2Choice) >= 0) {
+        return 1;         
+    }
+    return 2;
 }
 
 /*
@@ -104,14 +127,6 @@ function checkPlayerTendencies() {
 }
 
 /*
- * Writes player choices on UI
- */
-function updatePlays(player1Choice, player2Choice) {
-    player1ChoiceElement.innerHTML = player1Choice;
-    player2ChoiceElement.innerHTML = player2Choice;
-}
-
-/*
  * Based on the percentage of the player's plays, chooses computer's next play
  */
 function choosePlay(playerTendence) {
@@ -125,18 +140,26 @@ function choosePlay(playerTendence) {
 }
 
 /*
- * Compare weapons to check the winner
+ * Writes player choices on UI and post the result
  */
-function compareWeapons(player1Choice, player2Choice) {
-    //Check if it's a tie
-    if (player1Choice == player2Choice) {
-        return 0;
+function writeResult(player1Choice, player2Choice, winner) {    
+    player1ChoiceImage.src = gameSymbols == 1 ? "assets/img/"+player1Choice+"-hand.png" :
+    						  "assets/img/"+player1Choice+"-symbol.png";
+    player2ChoiceImage.src = gameSymbols == 1 ? "assets/img/"+player2Choice+"-hand.png" :
+    						  "assets/img/"+player2Choice+"-symbol.png";
+    player1Name.style.visibility = 'visible';
+    player2Name.style.visibility = 'visible';
+
+    if (winner == 1) {
+        player1Score++;
+        resultMessage.innerHTML = gameMode == 1 ? "You win!" : "Computer 1 win!";
+    } else if (winner == 2) {
+        player2Score++;
+        resultMessage.innerHTML = gameMode == 1 ? "You lost :(" : "Computer 2 win!";
+    } else {
+        resultMessage.innerHTML = "Hmm... that's a tie!";
+        tieScore++;
     }
-    //Check if player1's weapon beats player2's weapon
-    if (weapons[player1Choice].beats.indexOf(player2Choice) >= 0) {
-    	return 1;         
-    }
-    return 2;
 }
 
 /*
@@ -154,22 +177,16 @@ function updateScores() {
 function resetGame() {
     player1Score = 0;
     player2Score = 0;
+    player1ChoiceImage.src = "";
+    player2ChoiceImage.src = "";
+    player1Name.style.visibility = 'hidden';
+    player2Name.style.visibility = 'hidden';
+    resultMessage.innerHTML = "";
     tieScore = 0;
     updateScores();
 }
 
 //GAME MENU
-
-/* Game modes: 
-    1 - Player vs. Computer
-    2 - Computer vs. Computer
-*/
-var gameMode = 1;
-/* Game symbols: 
-    1 - Hands
-    2 - Objects
-*/
-var gameSymbols = 1;
 
 /*
  * Switch to Player vs Computer or Computer vs Computer
@@ -181,28 +198,14 @@ function switchGameMode() {
 }
 
 function checkGameMode() {
-    var player1Name = document.getElementById("player1Name");
-    var player2Name = document.getElementById("player2Name");
-    var player1ScoreName = document.getElementById("player1ScoreName");
-    var player2ScoreName = document.getElementById("player2ScoreName");
-    var player1Choice = document.getElementById("player1Choice");
-    var player2Choice = document.getElementById("player2Choice");
-    var gamePvCTitle = document.getElementById("game-pvc-title");
-    var gameCvCTitle = document.getElementById("game-cvc-title");
-    var btnSwitchGameMode = document.getElementById("switchGameMode-btn");
-    var divPlayerVsComputer = document.getElementById("playerVsComputerGame");
-    var divComputerVsComputer = document.getElementById("computerVsComputerGame");
-
     if (gameMode == 1) {
         //Player vs. Computer
         player1Name.innerHTML = "Player";
         player2Name.innerHTML = "Computer";
         player1ScoreName.innerHTML = "Player";
         player2ScoreName.innerHTML = "Computer";
-        btnSwitchGameMode.innerHTML = "Switch to Computer vs. Computer";
+        btnSwitchGameMode.innerHTML = "Switch to Computer vs. Computer (Simulation mode)";
         gamePvCTitle.innerHTML = "Make your choice!";
-        player1Choice.innerHTML = "Choose your weapon";
-        player2Choice.innerHTML = "I'm waiting for you!";
         divPlayerVsComputer.style.display = 'block';
         divComputerVsComputer.style.display = 'none';
     } else {
@@ -213,8 +216,6 @@ function checkGameMode() {
         player2ScoreName.innerHTML = "Computer 2";
         btnSwitchGameMode.innerHTML = "Switch to Player vs. Computer";
         gameCvCTitle.innerHTML = "Computer vs. Computer";
-        player1Choice.innerHTML = "I'll beat you!";
-        player2Choice.innerHTML = "Let's see, buddy!";
         divPlayerVsComputer.style.display = 'none';
         divComputerVsComputer.style.display = 'block';
     }
@@ -229,18 +230,8 @@ function switchGameSymbols() {
 }
 
 function checkGameSymbols() {
-    //Player vs Computer div
-    var rockPvCSymbol = document.getElementById("rock-pvc-img");
-    var paperPvCSymbol = document.getElementById("paper-pvc-img");
-    var scissorsPvCSymbol = document.getElementById("scissors-pvc-img");
-    //Computer vs Computer div
-    var rockCvCSymbol = document.getElementById("rock-cvc-img");
-    var paperCvCSymbol = document.getElementById("paper-cvc-img");
-    var scissorsCvCSymbol = document.getElementById("scissors-cvc-img");
-    var btnSwitchGameSymbols = document.getElementById("switchGameSymbols-btn");
-
+    //Hands symbols
     if (gameSymbols == 1) {
-        //Hands symbols
         rockPvCSymbol.src = "assets/img/rock-hand.png";
         rockCvCSymbol.src = "assets/img/rock-hand.png";
         paperPvCSymbol.src = "assets/img/paper-hand.png";
@@ -248,8 +239,8 @@ function checkGameSymbols() {
         scissorsPvCSymbol.src = "assets/img/scissors-hand.png";
         scissorsCvCSymbol.src = "assets/img/scissors-hand.png";
         btnSwitchGameSymbols.innerHTML = "Switch to objects symbols";
+    //Objects symbols
     } else {
-        //Objects symbols
         rockPvCSymbol.src = "assets/img/rock-symbol.png";
         rockCvCSymbol.src = "assets/img/rock-symbol.png";
         paperPvCSymbol.src = "assets/img/paper-symbol.png";
